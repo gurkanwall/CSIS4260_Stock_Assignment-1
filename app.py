@@ -21,7 +21,7 @@ st.sidebar.header("Select Company")
 companies = df['names'].unique()
 selected_company = st.sidebar.selectbox("Choose a company", companies)
 
-df_company = df[df['names'] == selected_company]
+df_company = df[df['name'] == selected_company]
 
 # Features & Target
 features = ["open", "high", "low", "volume", "EMA_10", "MACD", "ATR_14", "Williams_%R"]
