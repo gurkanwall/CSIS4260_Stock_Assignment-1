@@ -18,7 +18,7 @@ df = load_data()
 
 # Sidebar - Company Selection
 st.sidebar.header("Select Company")
-companies = df['names'].unique()
+companies = df['name'].unique()
 selected_company = st.sidebar.selectbox("Choose a company", companies)
 
 df_company = df[df['name'] == selected_company]
