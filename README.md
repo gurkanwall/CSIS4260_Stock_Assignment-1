@@ -32,7 +32,7 @@ The project is divided into **three main parts:**
 
 ---
 
-## 🏗️ Part 1: Storage & Retrieval ([🔗 View Notebook](https://github.com/AshmithaJagadish/CSIS-4260-Stock-Project/blob/main/Part-A%20.ipynb))
+## 🏗️ Part 1: Storage & Retrieval ([🔗 View Notebook]((https://github.com/gurkanwall/CSIS4260_Stock_Assignment-1/blob/main/Part-1.ipynb)))
 **Goal:** Compare CSV vs Parquet storage formats for efficiency.
 - ✅ Benchmark **read/write speeds**
 - ✅ Compare **file size reduction** using compression
