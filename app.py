@@ -4,6 +4,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import plotly.graph_objects as go
 from sklearn.ensemble import RandomForestRegressor
+from sklearn.linear_model import LinearRegression
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
 import pyarrow.parquet as pq
@@ -20,8 +21,8 @@ st.markdown("""
     </style>
     """, unsafe_allow_html=True)
 
-# Load dataset
-@st.cache_data
+# Load dataset with refresh option
+@st.cache_data(ttl=300)
 def load_data():
     file_path = "partc.parquet"  # Ensure the file is in the same directory as main.py
     df = pd.read_parquet(file_path, engine="pyarrow")
@@ -35,6 +36,15 @@ st.sidebar.header("Select a Company")
 companies = df['name'].unique()
 selected_company = st.sidebar.selectbox("Choose a company", companies)
 
+# Button to refresh data
+if st.sidebar.button("🔄 Refresh Data"):
+    st.cache_data.clear()
+    df = load_data()
+
+# Model Selection
+st.sidebar.header("Select Model")
+model_choice = st.sidebar.radio("Choose a prediction model:", ["Random Forest", "Linear Regression"])
+
 # Filter Data for Selected Company
 df_company = df[df['name'] == selected_company]
 
@@ -47,8 +57,12 @@ y = df_company[target]
 # Train-Test Split
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
-# Train Random Forest Model
-model = RandomForestRegressor(n_estimators=100, random_state=42)
+# Train Model
+if model_choice == "Random Forest":
+    model = RandomForestRegressor(n_estimators=100, random_state=42)
+elif model_choice == "Linear Regression":
+    model = LinearRegression()
+
 model.fit(X_train, y_train)
 
 # Predictions
@@ -97,16 +111,15 @@ candlestick_fig = go.Figure(data=[go.Candlestick(
 candlestick_fig.update_layout(title="Candlestick Chart", xaxis_title="Date", yaxis_title="Price", xaxis_rangeslider_visible=False, template="plotly_dark")
 st.plotly_chart(candlestick_fig, use_container_width=True)
 
-# Stock Price Forecast Graph
-st.markdown("### 📉 Stock Price Forecast")
-fig, ax = plt.subplots(figsize=(12, 6))
-ax.plot(df_company['date'], df_company['close'], label="Historical Close Prices", color="blue")
-ax.plot(forecast_df['Date'], forecast_df['Forecasted Close'], linestyle='dashed', marker='o', color='red', label="Forecasted Close Prices")
-ax.legend()
-ax.set_xlabel("Date")
-ax.set_ylabel("Close Price")
-ax.grid(True)
-st.pyplot(fig)
+# Improved Stock Price Forecast Graph with Rolling Average
+st.markdown("### 📉 Stock Price Forecast vs Actual Close Prices")
+df_company['Rolling_Avg'] = df_company['close'].rolling(window=10).mean()
+forecast_fig = go.Figure()
+forecast_fig.add_trace(go.Scatter(x=df_company['date'], y=df_company['close'], mode='lines', name='Historical Close Prices', line=dict(color='blue')))
+forecast_fig.add_trace(go.Scatter(x=df_company['date'], y=df_company['Rolling_Avg'], mode='lines', name='10-day Rolling Avg', line=dict(color='orange', dash='dot')))
+forecast_fig.add_trace(go.Scatter(x=forecast_df['Date'], y=forecast_df['Forecasted Close'], mode='lines+markers', name='Forecasted Close Prices', line=dict(color='red', dash='dash')))
+forecast_fig.update_layout(title="Stock Price Forecast vs Actual Close", xaxis_title="Date", yaxis_title="Close Price", template="plotly_dark")
+st.plotly_chart(forecast_fig, use_container_width=True)
 
 # Interactive Technical Indicators
 st.markdown("### 📡 Technical Indicators")
