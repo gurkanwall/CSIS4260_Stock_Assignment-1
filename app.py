@@ -2,6 +2,7 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
+import plotly.graph_objects as go
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
@@ -21,7 +22,7 @@ st.sidebar.header("Select Company")
 companies = df['name'].unique()
 selected_company = st.sidebar.selectbox("Choose a company", companies)
 
-df_company = df[df['name'] == selected_company]
+df_company = df[df['names'] == selected_company]
 
 # Features & Target
 features = ["open", "high", "low", "volume", "EMA_10", "MACD", "ATR_14", "Williams_%R"]
@@ -45,13 +46,14 @@ mae = mean_absolute_error(y_test, y_pred)
 mse = mean_squared_error(y_test, y_pred)
 r2 = r2_score(y_test, y_pred)
 
-# Display Metrics
+# Display Metrics at the top
+st.subheader("Model Performance Metrics")
 st.metric(label="Mean Absolute Error", value=round(mae, 2))
 st.metric(label="Mean Squared Error", value=round(mse, 2))
 st.metric(label="R-squared", value=round(r2, 2))
 
 # Forecast Next 20 Days
-future_dates = pd.date_range(start=df_company['date'].max(), periods=21, freq='B')[1:]
+future_dates = pd.date_range(start=df_company['date'].max(), periods=21, freq='B')[1:].date  # Remove time part
 future_X = X.tail(20)  # Using last known values as reference
 future_preds = model.predict(future_X)
 
@@ -60,7 +62,24 @@ forecast_df = pd.DataFrame({
     "Forecasted Close": np.round(future_preds, 2)
 })
 
-# Plotting Results
+# Display Forecast Table at the top
+st.subheader("Forecasted Values for Next 20 Days")
+st.dataframe(forecast_df, hide_index=True)
+
+# Plot Historical Data with Candlestick Chart
+st.subheader("Historical Price Data - Candlestick Chart")
+candlestick_fig = go.Figure(data=[go.Candlestick(
+    x=df_company['date'],
+    open=df_company['open'],
+    high=df_company['high'],
+    low=df_company['low'],
+    close=df_company['close'],
+    name="Candlestick"
+)])
+candlestick_fig.update_layout(title="Candlestick Chart", xaxis_title="Date", yaxis_title="Price", xaxis_rangeslider_visible=False)
+st.plotly_chart(candlestick_fig)
+
+# Plot Forecasted vs Historical Close Prices
 st.subheader("Stock Price Forecast")
 fig, ax = plt.subplots()
 ax.plot(df_company['date'], df_company['close'], label="Historical Close Prices")
@@ -70,6 +89,9 @@ ax.set_xlabel("Date")
 ax.set_ylabel("Close Price")
 st.pyplot(fig)
 
-# Display Forecast Table
-st.subheader("Forecasted Values for Next 20 Days")
-st.dataframe(forecast_df)
+# Additional Interactive Graphs
+st.subheader("Technical Indicators")
+st.line_chart(df_company.set_index("date")[['EMA_10', 'MACD', 'ATR_14', 'Williams_%R']])
+
+st.subheader("Volume Analysis")
+st.bar_chart(df_company.set_index("date")["volume"])
