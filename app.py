@@ -18,10 +18,21 @@ st.markdown("""
     .main { background-color: #f4f4f4; }
     .stTextInput, .stSelectbox { background-color: #ffffff; }
     .metric-container { display: flex; justify-content: space-around; }
+    .sidebar-content {
+        background-color: #1f4e79;
+        padding: 15px;
+        border-radius: 10px;
+        color: white;
+    }
+    .sidebar-title {
+        font-size: 24px;
+        font-weight: bold;
+        text-align: center;
+    }
     </style>
     """, unsafe_allow_html=True)
 
-# Load dataset with refresh option
+# Load dataset
 @st.cache_data(ttl=300)
 def load_data():
     file_path = "partc.parquet"  # Ensure the file is in the same directory as main.py
@@ -31,19 +42,16 @@ def load_data():
 df = load_data()
 
 # Sidebar - Company Selection
-st.sidebar.title("Stock Forecasting Dashboard")
+st.sidebar.markdown('<div class="sidebar-content">', unsafe_allow_html=True)
+st.sidebar.markdown('<p class="sidebar-title">📊 Stock Forecasting</p>', unsafe_allow_html=True)
 st.sidebar.header("Select a Company")
 companies = df['name'].unique()
-selected_company = st.sidebar.selectbox("Choose a company", companies)
-
-# Button to refresh data
-if st.sidebar.button("🔄 Refresh Data"):
-    st.cache_data.clear()
-    df = load_data()
+selected_company = st.sidebar.selectbox("📌 Choose a company", companies)
+st.sidebar.markdown('</div>', unsafe_allow_html=True)
 
 # Model Selection
 st.sidebar.header("Select Model")
-model_choice = st.sidebar.radio("Choose a prediction model:", ["Random Forest", "Linear Regression"])
+model_choice = st.sidebar.radio("📊 Choose a prediction model:", ["Random Forest", "Linear Regression"])
 
 # Filter Data for Selected Company
 df_company = df[df['name'] == selected_company]
