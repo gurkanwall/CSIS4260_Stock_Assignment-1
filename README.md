@@ -49,17 +49,18 @@ The project is divided into **three main parts:**
 - ✅ Use **Extra Trees Regressor & XGBoost** for stock price forecasting
 - ✅ Train models with an **80-20 train-test split**
 
-**Libraries Used:** Pandas, Polars, Scikit-learn, XGBoost
+**Libraries Used:** Pandas, Polars, Scikit-learn, Linear Regression, Random Forest Regression
 
 ---
 
-## 🎨 Part 3: Interactive Dashboard ([🔗 View Live Dashboard]([https://mainpy-mvymenbdcxfaks6c573vvp.streamlit.app/](https://csis4260stockassignment-1-bbddzv3uhsjpdppjzttvgc.streamlit.app/)))
+Part 3: Interactive Dashboard ([🔗 View Live Dashboard](https://csis4260stockassignment-1-bbddzv3uhsjpdppjzttvgc.streamlit.app/))
+
 **Goal:** Develop a dashboard to visualize benchmarking and predictions.
 - ✅ **Section A:** Display storage & performance benchmarks
 - ✅ **Section B:** Enable **company selection** to visualize predictions
 - ✅ **Candlestick charts** for historical stock data
 
-**Tools Used:** Streamlit, Plotly, Dash
+**Tools Used:** Streamlit
 
 ---
 
@@ -89,17 +90,3 @@ streamlit run main.py
 
 ---
 
-## 👨‍💻 Contributors
-- **[Your Name]** – Data Processing & Model Implementation
-- **[Your Name]** – Dashboard Development
-
-📩 For questions, contact: `your.email@example.com`
-
----
-
-## 📜 License
-This project is for educational purposes under **CSIS 4260** and is not for commercial use.
-
----
-
-🌟 **If you find this project helpful, give it a star on GitHub!** ⭐
