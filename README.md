@@ -53,7 +53,7 @@ The project is divided into **three main parts:**
 
 ---
 
-## 🎨 Part 3: Interactive Dashboard ([🔗 View Live Dashboard](https://mainpy-mvymenbdcxfaks6c573vvp.streamlit.app/))
+## 🎨 Part 3: Interactive Dashboard ([🔗 View Live Dashboard]([https://mainpy-mvymenbdcxfaks6c573vvp.streamlit.app/](https://csis4260stockassignment-1-bbddzv3uhsjpdppjzttvgc.streamlit.app/)))
 **Goal:** Develop a dashboard to visualize benchmarking and predictions.
 - ✅ **Section A:** Display storage & performance benchmarks
 - ✅ **Section B:** Enable **company selection** to visualize predictions
