@@ -57,7 +57,7 @@ st.sidebar.header("Select Model")
 model_choice = st.sidebar.radio("📊 Choose a prediction model:", ["Random Forest", "Linear Regression"])
 
 # Filter Data for Selected Company
-df_company = df[df['names'] == selected_company]
+df_company = df[df['name'] == selected_company]
 
 # Features & Target
 features = ["open", "high", "low", "volume", "EMA_10", "MACD", "ATR_14", "Williams_%R"]
