@@ -40,9 +40,9 @@ The project is divided into **three main parts:**
 
 **Tools Used:** Pandas, PyArrow, Fastparquet
 
----
 
-## 📊 Part 2: Data Manipulation & Prediction ([🔗 View Notebook](https://github.com/AshmithaJagadish/CSIS-4260-Stock-Project/blob/main/Part-B.ipynb))
+
+## 📊 Part 2: Data Manipulation & Prediction ([🔗 View Notebook](https://github.com/gurkanwall/CSIS4260_Stock_Assignment-1/blob/main/Part-2.ipynb))
 **Goal:** Enhance dataset with technical indicators & predict next-day closing prices.
 - ✅ Implement **4+ technical indicators** (EMA, MACD, ATR, Williams %R)
 - ✅ Compare **Pandas vs Polars** for performance
