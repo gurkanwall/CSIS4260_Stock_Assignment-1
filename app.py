@@ -32,11 +32,11 @@ df = load_data()
 # Sidebar - Company Selection
 st.sidebar.title("Stock Forecasting Dashboard")
 st.sidebar.header("Select a Company")
-companies = df['names'].unique()
+companies = df['name'].unique()
 selected_company = st.sidebar.selectbox("Choose a company", companies)
 
 # Filter Data for Selected Company
-df_company = df[df['names'] == selected_company]
+df_company = df[df['name'] == selected_company]
 
 # Features & Target
 features = ["open", "high", "low", "volume", "EMA_10", "MACD", "ATR_14", "Williams_%R"]
