@@ -42,13 +42,13 @@ def load_data():
 df = load_data()
 
 # Remove companies with less than 180 records
-df = df.groupby('name').filter(lambda x: len(x) >= 180)
+df = df.groupby('names').filter(lambda x: len(x) >= 180)
 
 # Sidebar - Company Selection
 st.sidebar.markdown('<div class="sidebar-content">', unsafe_allow_html=True)
 st.sidebar.markdown('<p class="sidebar-title">📊 Stock Forecasting</p>', unsafe_allow_html=True)
 st.sidebar.header("Select a Company")
-companies = df['name'].unique()
+companies = df['names'].unique()
 selected_company = st.sidebar.selectbox("📌 Choose a company", companies)
 st.sidebar.markdown('</div>', unsafe_allow_html=True)
 
@@ -57,13 +57,17 @@ st.sidebar.header("Select Model")
 model_choice = st.sidebar.radio("📊 Choose a prediction model:", ["Random Forest", "Linear Regression"])
 
 # Filter Data for Selected Company
-df_company = df[df['name'] == selected_company]
+df_company = df[df['names'] == selected_company]
 
 # Features & Target
 features = ["open", "high", "low", "volume", "EMA_10", "MACD", "ATR_14", "Williams_%R"]
 target = "close"
 X = df_company[features]
 y = df_company[target]
+
+# Drop NaN or Infinite Values
+X = X.replace([np.inf, -np.inf], np.nan).dropna()
+y = y[X.index]  # Ensure y matches the filtered X
 
 # Train-Test Split
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
